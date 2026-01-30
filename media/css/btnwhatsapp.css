@@ -1,0 +1,49 @@
+/* BOTAO DO ZAP */
+#whatsapp-icon {
+    /*display: none;*/
+    position: fixed;
+    width: 80px;
+    height: 80px;
+    right: 15px;
+    bottom: 30px;
+    padding: 10px;
+    text-align: center;
+    background-color: #4aae20;
+    border-radius: 100px;
+    font-size: 40px !important;
+    border: 2px solid #eee;
+}
+
+#whatsapp-icon:hover {
+    background-color: #fff;
+    border: 2px solid #4aae20;
+}
+
+#whatsapp-icon a {
+    color: #fff;
+}
+
+#whatsapp-icon:hover a {
+    color: #4aae20;
+}
+
+.pulse {
+    font-family: Arial;
+    line-height: 1.5;
+    font-size: 12px;
+    font-weight: bold;
+    float: left;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #dc3545;
+    cursor: pointer;
+    box-shadow: 0 0 0 #e91e63;
+    animation: pulse 2s infinite;
+    z-index: 9999;
+    position: absolute;
+    color: #fff;
+    right: -5px;
+    top: 10px;
+}
+/* BOTAO DO ZAP */

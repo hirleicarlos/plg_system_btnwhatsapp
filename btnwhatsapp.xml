@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension type="plugin" version="4.0" client="site" group="system" method="upgrade">
+    <name>Botão de WhatsApp</name>
+    <author>Hirlei Carlos Pereira de Araújo</author>
+    <creationDate>2025-05-29</creationDate>
+    <copyright>2025 Hirlei Carlos Pereira de Araújo</copyright>
+    <license>GPL-2.0-or-later</license>
+    <authorEmail>prof.hirleicarlos@gmail.com</authorEmail>
+    <authorUrl>https://www.hirleicarlos.com.br</authorUrl>
+    <version>1.0.0</version>
+    <description>Este plugin adiciona automaticamente um botão flutuante do WhatsApp em todas as páginas do site, incluindo o link completo da página atual no texto da mensagem. Assim, o visitante pode iniciar uma conversa e compartilhar diretamente o conteúdo que está visualizando, facilitando o atendimento e aumentando as chances de conversão.</description>
+    <files>
+        <filename plugin="btnwhatsapp">btnwhatsapp.php</filename>
+        <filename>index.html</filename>
+    </files>
+    <media folder="media" destination="plg_system_btnwhatsapp">
+        <filename>index.html</filename>
+        <folder>css</folder>
+    </media>
+    <config>
+        <fields name="params">
+            <fieldset name="basic" label="Configurações Básicas">
+                <field
+                        name="whatsapp_phone"
+                        type="text"
+                        label="Número de Telefone"
+                        description="Informe o número de telefone do WhatsApp (somente números, código do país Brasil 55 e com DDD sem zero)."
+                        required="true"
+                />
+                <field
+                        name="whatsapp_message"
+                        type="textarea"
+                        label="Mensagem Padrão"
+                        description="Digite a mensagem padrão que será enviada ao clicar no botão. Use {url} para incluir a URL atual da página."
+                        default="Olá, estou visitando esta página e preciso de um Acordeon, pode me ajudar?"
+                        required="true"
+                />
+                <field
+                        name="whatsapp_url"
+                        type="url"
+                        label="URL Base do WhatsApp"
+                        description="URL base para o envio da mensagem via API do WhatsApp. Ex: https://api.whatsapp.com/send"
+                        default="https://api.whatsapp.com/send"
+                        required="true"
+                />
+            </fieldset>
+        </fields>
+    </config>
+</extension>
