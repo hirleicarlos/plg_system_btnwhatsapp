@@ -128,4 +128,5 @@ Desenvolvedor Web Sênior | PHP & Joomla | Sistemas Corporativos, Governo e Educ
 
 🌐 Site: https://hirleicarlos.github.io  
 🐙 GitHub: https://github.com/hirleicarlos  
-💼 LinkedIn: https://www.linkedin.com/in/hirleicarlos/
+💼 LinkedIn: https://www.linkedin.com/in/hirleicarlos/  
+📧 Email: prof.hirleicarlos@gmail.com  
