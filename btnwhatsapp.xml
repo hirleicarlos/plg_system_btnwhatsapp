@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <extension type="plugin" group="system" method="upgrade" version="4.0">
     <name>PLG_SYSTEM_BTNWHATSAPP</name>
-    <author>Hirlei Carlos</author>
+    <author>Hirlei Carlos Pereira de Araújo</author>
+    <authorEmail>prof.hirleicarlos@gmail.com</authorEmail>
+    <authorUrl>https://hirleicarlos.github.io</authorUrl>
     <creationDate>2026-02-15</creationDate>
     <version>2.0.0</version>
     <description>PLG_SYSTEM_BTNWHATSAPP_DESC</description>
