@@ -124,7 +124,7 @@ MIT License
 ## 👤 Autor
 
 **Hirlei Carlos Pereira de Araújo**  
-Desenvolvedor Web Sênior — PHP & Joomla
+Desenvolvedor Web Sênior | PHP & Joomla | Sistemas Corporativos, Governo e Educação | Professor Técnico e Universitário
 
 🌐 Site: https://hirleicarlos.github.io  
 🐙 GitHub: https://github.com/hirleicarlos  
