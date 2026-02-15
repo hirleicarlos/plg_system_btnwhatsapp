@@ -1,49 +1,244 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<extension type="plugin" version="4.0" client="site" group="system" method="upgrade">
-    <name>Botão de WhatsApp</name>
-    <author>Hirlei Carlos Pereira de Araújo</author>
-    <creationDate>2025-05-29</creationDate>
-    <copyright>2025 Hirlei Carlos Pereira de Araújo</copyright>
-    <license>GPL-2.0-or-later</license>
-    <authorEmail>prof.hirleicarlos@gmail.com</authorEmail>
-    <authorUrl>https://www.hirleicarlos.com.br</authorUrl>
-    <version>1.0.0</version>
-    <description>Este plugin adiciona automaticamente um botão flutuante do WhatsApp em todas as páginas do site, incluindo o link completo da página atual no texto da mensagem. Assim, o visitante pode iniciar uma conversa e compartilhar diretamente o conteúdo que está visualizando, facilitando o atendimento e aumentando as chances de conversão.</description>
+<extension type="plugin" group="system" method="upgrade" version="4.0">
+    <name>PLG_SYSTEM_BTNWHATSAPP</name>
+    <author>Hirlei Carlos</author>
+    <creationDate>2026-02-15</creationDate>
+    <version>2.0.0</version>
+    <description>PLG_SYSTEM_BTNWHATSAPP_DESC</description>
+
+    <namespace path="src">Joomla\Plugin\System\Btnwhatsapp</namespace>
+
     <files>
         <filename plugin="btnwhatsapp">btnwhatsapp.php</filename>
+        <folder>src</folder>
+        <folder>services</folder>
+        <folder>layouts</folder>
+        <folder>language</folder>
         <filename>index.html</filename>
     </files>
+
     <media folder="media" destination="plg_system_btnwhatsapp">
-        <filename>index.html</filename>
         <folder>css</folder>
+        <filename>index.html</filename>
     </media>
+
+    <languages>
+        <language tag="en-GB">language/en-GB/en-GB.plg_system_btnwhatsapp.ini</language>
+        <language tag="en-GB">language/en-GB/en-GB.plg_system_btnwhatsapp.sys.ini</language>
+
+        <language tag="pt-BR">language/pt-BR/pt-BR.plg_system_btnwhatsapp.ini</language>
+        <language tag="pt-BR">language/pt-BR/pt-BR.plg_system_btnwhatsapp.sys.ini</language>
+    </languages>
+
     <config>
         <fields name="params">
-            <fieldset name="basic" label="Configurações Básicas">
+
+            <!-- Guia 1 -->
+            <fieldset name="basic" label="PLG_SYSTEM_BTNWHATSAPP_FIELDSET_BASIC">
                 <field
-                        name="whatsapp_phone"
-                        type="text"
-                        label="Número de Telefone"
-                        description="Informe o número de telefone do WhatsApp (somente números, código do país Brasil 55 e com DDD sem zero)."
-                        required="true"
-                />
-                <field
-                        name="whatsapp_message"
-                        type="textarea"
-                        label="Mensagem Padrão"
-                        description="Digite a mensagem padrão que será enviada ao clicar no botão. Use {url} para incluir a URL atual da página."
-                        default="Olá, estou visitando esta página e preciso de um Acordeon, pode me ajudar?"
-                        required="true"
-                />
-                <field
-                        name="whatsapp_url"
-                        type="url"
-                        label="URL Base do WhatsApp"
-                        description="URL base para o envio da mensagem via API do WhatsApp. Ex: https://api.whatsapp.com/send"
-                        default="https://api.whatsapp.com/send"
-                        required="true"
-                />
+                        name="enabled"
+                        type="radio"
+                        default="0"
+                        label="PLG_SYSTEM_BTNWHATSAPP_ENABLED_LABEL"
+                        class="btn-group btn-group-yesno"
+                >
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
+                </field>
             </fieldset>
+
+            <!-- Guia 2 -->
+            <fieldset name="whatsapp" label="PLG_SYSTEM_BTNWHATSAPP_FIELDSET_WHATSAPP">
+                <field
+                        name="phone"
+                        type="text"
+                        required="true"
+                        label="PLG_SYSTEM_BTNWHATSAPP_PHONE_LABEL"
+                        description="PLG_SYSTEM_BTNWHATSAPP_PHONE_DESC"
+                />
+
+                <field
+                        name="message"
+                        type="textarea"
+                        required="true"
+                        label="PLG_SYSTEM_BTNWHATSAPP_MESSAGE_LABEL"
+                        description="PLG_SYSTEM_BTNWHATSAPP_MESSAGE_DESC"
+                        hint="PLG_SYSTEM_BTNWHATSAPP_MESSAGE_HINT"
+                        default="Olá! Estou nesta página: {url}"
+                />
+
+                <field
+                        type="note"
+                        class="alert alert-info"
+                        label=""
+                        description="PLG_SYSTEM_BTNWHATSAPP_MESSAGE_NOTE"
+                />
+
+                <field
+                        name="position"
+                        type="list"
+                        default="end"
+                        label="PLG_SYSTEM_BTNWHATSAPP_POSITION_LABEL"
+                >
+                    <option value="end">PLG_SYSTEM_BTNWHATSAPP_POSITION_END</option>
+                    <option value="start">PLG_SYSTEM_BTNWHATSAPP_POSITION_START</option>
+                </field>
+            </fieldset>
+
+            <!-- Guia 3 -->
+            <fieldset name="display" label="PLG_SYSTEM_BTNWHATSAPP_FIELDSET_DISPLAY">
+
+                <field
+                        name="display_mode"
+                        type="list"
+                        default="all"
+                        label="PLG_SYSTEM_BTNWHATSAPP_DISPLAY_MODE_LABEL"
+                >
+                    <option value="all">PLG_SYSTEM_BTNWHATSAPP_DISPLAY_ALL</option>
+                    <option value="only">PLG_SYSTEM_BTNWHATSAPP_DISPLAY_ONLY</option>
+                    <option value="exclude">PLG_SYSTEM_BTNWHATSAPP_DISPLAY_EXCLUDE</option>
+                </field>
+
+                <field
+                        name="menu_items"
+                        type="sql"
+                        multiple="true"
+                        layout="joomla.form.field.list-fancy-select"
+                        label="PLG_SYSTEM_BTNWHATSAPP_MENU_ITEMS_LABEL"
+                        description="PLG_SYSTEM_BTNWHATSAPP_MENU_ITEMS_DESC"
+                        showon="display_mode:only,exclude"
+                        key_field="value"
+                        value_field="text"
+                        query="SELECT m.id AS value,
+                                      CONCAT(m.title, ' (#', m.id, ')') AS text
+                               FROM #__menu AS m
+                               WHERE m.client_id = 0
+                                 AND m.published >= 0
+                               ORDER BY m.menutype, m.lft"
+                />
+
+                <field
+                        name="device"
+                        type="list"
+                        default="all"
+                        label="PLG_SYSTEM_BTNWHATSAPP_DEVICE_LABEL"
+                >
+                    <option value="all">PLG_SYSTEM_BTNWHATSAPP_DEVICE_ALL</option>
+                    <option value="desktop">PLG_SYSTEM_BTNWHATSAPP_DEVICE_DESKTOP</option>
+                    <option value="mobile">PLG_SYSTEM_BTNWHATSAPP_DEVICE_MOBILE</option>
+                </field>
+
+            </fieldset>
+
+            <!-- Guia 4 (NOVO) -->
+            <fieldset name="layout" label="PLG_SYSTEM_BTNWHATSAPP_FIELDSET_LAYOUT">
+
+                <field
+                        name="layout_mode"
+                        type="list"
+                        default="icon_text"
+                        label="PLG_SYSTEM_BTNWHATSAPP_LAYOUT_MODE_LABEL"
+                >
+                    <option value="icon">PLG_SYSTEM_BTNWHATSAPP_LAYOUT_MODE_ICON</option>
+                    <option value="text">PLG_SYSTEM_BTNWHATSAPP_LAYOUT_MODE_TEXT</option>
+                    <option value="icon_text">PLG_SYSTEM_BTNWHATSAPP_LAYOUT_MODE_ICON_TEXT</option>
+                </field>
+
+                <field
+                        name="button_text"
+                        type="text"
+                        default="WhatsApp"
+                        label="PLG_SYSTEM_BTNWHATSAPP_BUTTON_TEXT_LABEL"
+                        description="PLG_SYSTEM_BTNWHATSAPP_BUTTON_TEXT_DESC"
+                        showon="layout_mode:text,icon_text"
+                />
+
+                <field
+                        name="shape"
+                        type="list"
+                        default="pill"
+                        label="PLG_SYSTEM_BTNWHATSAPP_SHAPE_LABEL"
+                >
+                    <option value="circle">PLG_SYSTEM_BTNWHATSAPP_SHAPE_CIRCLE</option>
+                    <option value="pill">PLG_SYSTEM_BTNWHATSAPP_SHAPE_PILL</option>
+                    <option value="rounded">PLG_SYSTEM_BTNWHATSAPP_SHAPE_ROUNDED</option>
+                    <option value="square">PLG_SYSTEM_BTNWHATSAPP_SHAPE_SQUARE</option>
+                </field>
+
+                <field
+                        name="size"
+                        type="list"
+                        default="md"
+                        label="PLG_SYSTEM_BTNWHATSAPP_SIZE_LABEL"
+                >
+                    <option value="sm">PLG_SYSTEM_BTNWHATSAPP_SIZE_SM</option>
+                    <option value="md">PLG_SYSTEM_BTNWHATSAPP_SIZE_MD</option>
+                    <option value="lg">PLG_SYSTEM_BTNWHATSAPP_SIZE_LG</option>
+                </field>
+
+            </fieldset>
+
+            <!-- Guia 5 (NOVO) -->
+            <fieldset name="design" label="PLG_SYSTEM_BTNWHATSAPP_FIELDSET_DESIGN">
+
+                <field name="bg_color"
+                       type="color"
+                       default="#25D366"
+                       label="PLG_SYSTEM_BTNWHATSAPP_BG_COLOR_LABEL"
+                       description="PLG_SYSTEM_BTNWHATSAPP_BG_COLOR_DESC" />
+
+                <field name="text_color"
+                       type="color"
+                       default="#FFFFFF"
+                       label="PLG_SYSTEM_BTNWHATSAPP_TEXT_COLOR_LABEL"
+                       description="PLG_SYSTEM_BTNWHATSAPP_TEXT_COLOR_DESC" />
+
+                <field name="border_color"
+                       type="color"
+                       default="#000000"
+                       label="PLG_SYSTEM_BTNWHATSAPP_BORDER_COLOR_LABEL"
+                       description="PLG_SYSTEM_BTNWHATSAPP_BORDER_COLOR_DESC" />
+
+                <field name="bg_hover"
+                       type="color"
+                       default="#1ebe5d"
+                       label="PLG_SYSTEM_BTNWHATSAPP_BG_HOVER_LABEL"
+                       description="PLG_SYSTEM_BTNWHATSAPP_BG_HOVER_DESC" />
+
+                <field name="text_hover"
+                       type="color"
+                       default="#FFFFFF"
+                       label="PLG_SYSTEM_BTNWHATSAPP_TEXT_HOVER_LABEL"
+                       description="PLG_SYSTEM_BTNWHATSAPP_TEXT_HOVER_DESC" />
+
+                <field name="border_hover"
+                       type="color"
+                       default="#000000"
+                       label="PLG_SYSTEM_BTNWHATSAPP_BORDER_HOVER_LABEL"
+                       description="PLG_SYSTEM_BTNWHATSAPP_BORDER_HOVER_DESC" />
+
+                <field
+                        name="shadow"
+                        type="radio"
+                        default="1"
+                        label="PLG_SYSTEM_BTNWHATSAPP_SHADOW_LABEL"
+                        class="btn-group btn-group-yesno"
+                >
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
+                </field>
+
+                <field name="offset_bottom" type="number" default="20" min="0"
+                       label="PLG_SYSTEM_BTNWHATSAPP_OFFSET_BOTTOM_LABEL" />
+
+                <field name="offset_inline" type="number" default="20" min="0"
+                       label="PLG_SYSTEM_BTNWHATSAPP_OFFSET_INLINE_LABEL" />
+
+                <field name="zindex" type="number" default="999999" min="1"
+                       label="PLG_SYSTEM_BTNWHATSAPP_ZINDEX_LABEL" />
+
+            </fieldset>
+
         </fields>
     </config>
 </extension>

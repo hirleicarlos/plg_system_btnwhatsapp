@@ -1,49 +1,157 @@
-/* BOTAO DO ZAP */
-#whatsapp-icon {
-    /*display: none;*/
+/* =========================
+   BTN WHATSAPP (PRODUTO)
+   - Direcional (start/end)
+   - Shape (circle/pill/rounded/square)
+   - Size (sm/md/lg)
+   - CSS variables via inline style (layout)
+   ========================= */
+
+.plg-btnwa {
     position: fixed;
-    width: 80px;
-    height: 80px;
-    right: 15px;
-    bottom: 30px;
-    padding: 10px;
-    text-align: center;
-    background-color: #4aae20;
-    border-radius: 100px;
-    font-size: 40px !important;
-    border: 2px solid #eee;
+    inset-block-end: var(--btnwa-offset-bottom, 20px);
+    z-index: var(--btnwa-zindex, 999999);
 }
 
-#whatsapp-icon:hover {
-    background-color: #fff;
-    border: 2px solid #4aae20;
+/* posição direcional */
+.plg-btnwa[data-pos="end"] {
+    inset-inline-end: var(--btnwa-offset-inline, 20px);
 }
 
-#whatsapp-icon a {
-    color: #fff;
+.plg-btnwa[data-pos="start"] {
+    inset-inline-start: var(--btnwa-offset-inline, 20px);
 }
 
-#whatsapp-icon:hover a {
-    color: #4aae20;
+/* botão base */
+.plg-btnwa__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+
+    background: var(--btnwa-bg, #25D366);
+    color: var(--btnwa-color, #ffffff);
+    border: 1px solid var(--btnwa-border, transparent);
+
+    text-decoration: none;
+    font-weight: 700;
+    line-height: 1;
+
+    transition: background-color .2s ease, color .2s ease, border-color .2s ease, transform .08s ease;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
-.pulse {
-    font-family: Arial;
-    line-height: 1.5;
-    font-size: 12px;
-    font-weight: bold;
-    float: left;
+/* sombra (liga/desliga via --btnwa-shadow: 1|0) */
+.plg-btnwa__btn {
+    box-shadow: calc(var(--btnwa-shadow, 1) * 1px) 4px 12px rgba(0, 0, 0, .20);
+}
+
+/* hover */
+.plg-btnwa__btn:hover {
+    background: var(--btnwa-bg-hover, #1ebe5d);
+    color: var(--btnwa-color-hover, #ffffff);
+    border-color: var(--btnwa-border-hover, transparent);
+    transform: translateY(-1px);
+}
+
+/* focus acessível */
+.plg-btnwa__btn:focus,
+.plg-btnwa__btn:focus-visible {
+    outline: 2px solid rgba(37, 211, 102, .35);
+    outline-offset: 3px;
+}
+
+/* ícone */
+.plg-btnwa__icon {
+    display: inline-block;
+    flex: 0 0 auto;
+}
+
+/* texto */
+.plg-btnwa__text {
+    display: inline-block;
+    white-space: nowrap;
+}
+
+/* =========================
+   SIZE
+   ========================= */
+.plg-btnwa[data-size="sm"] .plg-btnwa__btn {
+    padding: 10px 14px;
+    font-size: 13px;
+}
+
+.plg-btnwa[data-size="md"] .plg-btnwa__btn {
+    padding: 12px 18px;
+    font-size: 14px;
+}
+
+.plg-btnwa[data-size="lg"] .plg-btnwa__btn {
+    padding: 14px 22px;
+    font-size: 15px;
+}
+
+/* ícone acompanha o size */
+.plg-btnwa[data-size="sm"] .plg-btnwa__icon {
     width: 18px;
     height: 18px;
-    border-radius: 50%;
-    background: #dc3545;
-    cursor: pointer;
-    box-shadow: 0 0 0 #e91e63;
-    animation: pulse 2s infinite;
-    z-index: 9999;
-    position: absolute;
-    color: #fff;
-    right: -5px;
-    top: 10px;
 }
-/* BOTAO DO ZAP */
+
+.plg-btnwa[data-size="md"] .plg-btnwa__icon {
+    width: 22px;
+    height: 22px;
+}
+
+.plg-btnwa[data-size="lg"] .plg-btnwa__icon {
+    width: 26px;
+    height: 26px;
+}
+
+/* =========================
+   SHAPE
+   ========================= */
+
+/* circle: força botão virar bolinha (ótimo para modo icon) */
+.plg-btnwa[data-shape="circle"] .plg-btnwa__btn {
+    border-radius: 999px;
+    padding: 14px;
+}
+
+.plg-btnwa[data-shape="circle"][data-size="sm"] .plg-btnwa__btn {
+    padding: 12px;
+}
+
+.plg-btnwa[data-shape="circle"][data-size="md"] .plg-btnwa__btn {
+    padding: 14px;
+}
+
+.plg-btnwa[data-shape="circle"][data-size="lg"] .plg-btnwa__btn {
+    padding: 16px;
+}
+
+/* pill */
+.plg-btnwa[data-shape="pill"] .plg-btnwa__btn {
+    border-radius: 999px;
+}
+
+/* rounded */
+.plg-btnwa[data-shape="rounded"] .plg-btnwa__btn {
+    border-radius: 16px;
+}
+
+/* square */
+.plg-btnwa[data-shape="square"] .plg-btnwa__btn {
+    border-radius: 6px;
+}
+
+/* =========================
+   MODE: icon only
+   - garante que não estique e fica centralizado
+   ========================= */
+.plg-btnwa[data-mode="icon"] .plg-btnwa__btn {
+    justify-content: center;
+    gap: 0;
+}
+
+.plg-btnwa[data-mode="icon"] .plg-btnwa__text {
+    display: none;
+}
