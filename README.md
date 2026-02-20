@@ -162,7 +162,7 @@ Configurações disponíveis:
 # 📬 Autor
 
 Hirlei Carlos  
-Desenvolvedor Web Sênior | PHP & Joomla
+Desenvolvedor Web Sênior | PHP & Joomla | Sistemas Corporativos | Governo e Educação
 
 - LinkedIn: https://linkedin.com/in/hirleicarlos
 - GitHub: https://github.com/hirleicarlos
