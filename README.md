@@ -1,132 +1,172 @@
-# plg_system_btnwhatsapp
+# 📲 plg_system_btnwhatsapp — Plugin de Botão Flutuante WhatsApp para Joomla
 
-Plugin Joomla do tipo **System** para adicionar um botão flutuante de WhatsApp altamente configurável no site.
-
----
-
-## 📌 Descrição
-
-O **plg_system_btnwhatsapp** permite exibir um botão flutuante de WhatsApp em qualquer página do site Joomla, facilitando o contato direto dos usuários com a empresa ou responsável pelo site.
-
-A versão 2.0.0 evoluiu o plugin para um nível mais profissional, incluindo controle avançado de exibição, layout configurável e personalização completa de design.
-
-Leve, independente e compatível com qualquer template Joomla.
+![Status](https://img.shields.io/badge/status-ativo-success)
+![Joomla](https://img.shields.io/badge/Joomla-4.x%20%7C%205.x-blue)
+![Tipo](https://img.shields.io/badge/Tipo-Plugin%20System-orange)
+![Licença](https://img.shields.io/badge/licença-GPL-lightgrey)
 
 ---
 
-## 📋 Requisitos
+## 📌 Visão Geral
 
-- **Compatível com:** Joomla 4.x, 5.x e 6.x
-- **Versão atual do plugin:** 2.0.0
-- Não depende de frameworks externos (Helix, Bootstrap custom, FontAwesome, etc.)
+O **plg_system_btnwhatsapp** é um plugin do tipo **System** para Joomla 4 e 5 que adiciona automaticamente um **botão flutuante de WhatsApp** no frontend do site.
 
----
+O objetivo é permitir:
 
-## ⚙️ Funcionalidades
-
-### ✅ WhatsApp
-- Número configurável
-- Mensagem personalizada
-- Variáveis dinâmicas:
-   - `{url}` → URL atual
-   - `{title}` → título da página
-   - `{sitename}` → nome do site
+- Comunicação rápida com visitantes
+- Personalização de número e mensagem
+- Controle de exibição
+- Implementação leve e desacoplada do template
 
 ---
 
-### ✅ Exibição
-- Mostrar em todas as páginas
-- Mostrar apenas em menus selecionados
-- Ocultar em menus selecionados
-- Controle por dispositivo:
-   - Todos
-   - Apenas Desktop
-   - Apenas Mobile
+# 🏗 Arquitetura do Plugin
+
+O plugin atua na camada de sistema do Joomla, interceptando o ciclo de renderização da página.
+
+```
+┌─────────────────────────────┐
+│          Frontend Joomla    │
+└──────────────┬──────────────┘
+               │
+               ▼
+┌─────────────────────────────┐
+│     Evento onAfterRender    │
+└──────────────┬──────────────┘
+               │
+               ▼
+┌─────────────────────────────┐
+│  Injeção do HTML/CSS/JS     │
+│   Botão Flutuante WhatsApp  │
+└─────────────────────────────┘
+```
 
 ---
 
-### ✅ Layout
-- Ícone
-- Texto
-- Ícone + texto
-- Formatos:
-   - Círculo
-   - Pílula
-   - Arredondado
-   - Quadrado
-- Tamanhos:
-   - Pequeno
-   - Médio
-   - Grande
+# 📁 Estrutura do Plugin
+
+```
+plg_system_btnwhatsapp/
+│
+├── btnwhatsapp.php
+├── btnwhatsapp.xml
+├── index.html
+└── media/
+    ├── css/
+    ├── js/
+    └── img/
+```
 
 ---
 
-### ✅ Design
-- Cor de fundo
-- Cor do texto
-- Cor da borda
-- Cores hover
-- Ativar/desativar sombra
-- Controle de:
-   - Distância do rodapé
-   - Distância lateral
-   - Z-index
+# ⚙️ Funcionamento Técnico
+
+O plugin:
+
+1. É carregado como **plugin do tipo system**
+2. Intercepta o evento:
+   ```
+   onAfterRender()
+   ```
+3. Verifica se está no **frontend**
+4. Injeta:
+  - HTML do botão
+  - CSS de posicionamento
+  - JS opcional (interações)
+5. Renderiza o botão flutuante na página
 
 ---
 
-## 🧩 Tipo de Plugin
+# 🎯 Objetivo Técnico
 
-- **Grupo:** System
-- **Evento utilizado:** onAfterRender
-- **Arquitetura moderna:** Namespace + Layout + WebAssetManager
+- Implementação desacoplada do template
+- Independência do layout do site
+- Injeção leve via ciclo de renderização
+- Compatibilidade com Joomla 4 e 5
+- Fácil instalação e configuração
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+# 📦 Instalação
+
+1. Compactar a pasta:
+   ```
+   plg_system_btnwhatsapp.zip
+   ```
+2. Acessar:
+   ```
+   Painel Administrativo Joomla → Sistema → Instalar Extensões
+   ```
+3. Enviar o arquivo ZIP
+4. Ativar o plugin em:
+   ```
+   Sistema → Plugins → plg_system_btnwhatsapp
+   ```
+
+---
+
+# 🔧 Configuração
+
+Configurações disponíveis:
+
+- Número do WhatsApp
+- Mensagem padrão
+- Exibir em todas as páginas ou apenas específicas
+- Posição do botão (direita/esquerda)
+- Cor personalizada (se aplicável)
+
+---
+
+# 🧠 Decisões Técnicas
+
+| Decisão | Justificativa |
+|----------|---------------|
+| Tipo System | Permite injeção global no frontend |
+| Evento onAfterRender | Garante HTML final antes da saída |
+| Separação media/ | Organização e cache adequado |
+| Injeção dinâmica | Evita alteração de template |
+
+---
+
+# 🧾 Boas Práticas Aplicadas
+
+- Verificação de contexto (`isClient('site')`)
+- Não interferência no backend
+- Estrutura organizada de mídia
+- XML de instalação padronizado
+- Compatibilidade com Joomla 5
+
+---
+
+# 🚀 Roadmap Futuro
+
+- Suporte a múltiplos números
+- Integração com WhatsApp Business API
+- Animações personalizadas
+- Delay programável de exibição
+- Configuração por menu item
+- Modo dark automático
+
+---
+
+# 🛠 Tecnologias Utilizadas
 
 - PHP 8+
-- Joomla Framework
+- Joomla 4 / 5
 - HTML5
 - CSS3
-- XML Manifest
-- WebAssetManager (padrão Joomla 4+)
+- JavaScript
 
 ---
 
-## 📦 Instalação
+# 📬 Autor
 
-1. Acesse:
-   **Extensões → Gerenciar → Instalar**
-2. Faça upload do arquivo ZIP
-3. Vá em:
-   **Extensões → Plugins**
-4. Ative:
-   **System - Botão WhatsApp**
-5. Configure conforme necessário
+Hirlei Carlos  
+Desenvolvedor Web Sênior | PHP & Joomla
+
+- LinkedIn: https://linkedin.com/in/hirleicarlos
+- GitHub: https://github.com/hirleicarlos
 
 ---
 
-## ⚠️ Observações
-
-- Funciona com qualquer template Joomla
-- Não utiliza bibliotecas externas
-- Pode ser utilizado em ambientes corporativos
-- Após ativação, limpar cache se necessário
-
----
-
-## 📄 Licença
-
-MIT License
-
----
-
-## 👤 Autor
-
-**Hirlei Carlos Pereira de Araújo**  
-Desenvolvedor Web Sênior | PHP & Joomla | Sistemas Corporativos, Governo e Educação | Professor Técnico e Universitário
-
-🌐 Site: https://hirleicarlos.github.io  
-🐙 GitHub: https://github.com/hirleicarlos  
-💼 LinkedIn: https://www.linkedin.com/in/hirleicarlos/  
-📧 Email: prof.hirleicarlos@gmail.com  
+© 2026 — plg_system_btnwhatsapp
