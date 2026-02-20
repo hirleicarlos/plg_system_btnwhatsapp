@@ -152,7 +152,7 @@ Configurações disponíveis:
 # 🛠 Tecnologias Utilizadas
 
 - PHP 8+
-- Joomla 4 / 5
+- Joomla 4 / 5 / 6
 - HTML5
 - CSS3
 - JavaScript
