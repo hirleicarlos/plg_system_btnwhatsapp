@@ -257,7 +257,7 @@ Após o `DOMContentLoaded`, lê os `data-attributes` do wrapper e:
 ## 📬 Autor
 
 **Hirlei Carlos Pereira de Araújo**  
-Desenvolvedor Web Sênior · PHP & Joomla · Sistemas Corporativos · Governo e Educação
+Desenvolvedor Full Stack Sênior | PHP & Joomla | Portais e Sistemas em Escala | Governo, Cooperativismo e Educação
 
 - 🔗 LinkedIn: [linkedin.com/in/hirleicarlos](https://linkedin.com/in/hirleicarlos)
 - 🐙 GitHub: [github.com/hirleicarlos](https://github.com/hirleicarlos)
