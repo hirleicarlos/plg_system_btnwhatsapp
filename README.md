@@ -1,4 +1,3 @@
-````markdown
 # 📲 plg_system_btnwhatsapp — Botão Flutuante WhatsApp para Joomla
 
 ![Versão](https://img.shields.io/badge/versão-3.1.0-blue)
@@ -267,4 +266,3 @@ Desenvolvedor Web Sênior · PHP & Joomla · Sistemas Corporativos · Governo e 
 ---
 
 © 2026 — plg_system_btnwhatsapp · GPL v2
-````
