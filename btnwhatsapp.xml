@@ -7,8 +7,8 @@
     <authorEmail>prof.hirleicarlos@gmail.com</authorEmail>
     <authorUrl>https://hirleicarlos.github.io/</authorUrl>
 
-    <creationDate>2026-02-15</creationDate>
-    <version>2.0.0</version>
+    <creationDate>2026-04-14</creationDate>
+    <version>3.0.0</version>
 
     <copyright>(C) 2026 Hirlei Carlos Pereira de Araújo</copyright>
     <license>GNU General Public License version 2 or later</license>
@@ -17,7 +17,6 @@
 
     <namespace path="src">Joomla\Plugin\System\Btnwhatsapp</namespace>
 
-    <!-- OBRIGATÓRIO PARA JED -->
     <updateservers>
         <server type="extension" priority="1" name="System - WhatsApp Button">
             https://hirleicarlos.github.io/updates/plg_system_btnwhatsapp.xml
@@ -35,13 +34,13 @@
 
     <media folder="media" destination="plg_system_btnwhatsapp">
         <folder>css</folder>
+        <folder>js</folder>
         <filename>index.html</filename>
     </media>
 
     <languages>
         <language tag="en-GB">language/en-GB/en-GB.plg_system_btnwhatsapp.ini</language>
         <language tag="en-GB">language/en-GB/en-GB.plg_system_btnwhatsapp.sys.ini</language>
-
         <language tag="pt-BR">language/pt-BR/pt-BR.plg_system_btnwhatsapp.ini</language>
         <language tag="pt-BR">language/pt-BR/pt-BR.plg_system_btnwhatsapp.sys.ini</language>
     </languages>
@@ -49,48 +48,36 @@
     <config>
         <fields name="params">
 
-            <!-- ================= BASIC ================= -->
-            <fieldset name="basic" label="PLG_SYSTEM_BTNWHATSAPP_FIELDSET_BASIC">
-                <field
-                        name="enabled"
-                        type="radio"
-                        default="0"
-                        label="PLG_SYSTEM_BTNWHATSAPP_ENABLED_LABEL"
-                        class="btn-group btn-group-yesno">
-                    <option value="1">JYES</option>
-                    <option value="0">JNO</option>
-                </field>
-            </fieldset>
-
             <!-- ================= WHATSAPP ================= -->
             <fieldset name="whatsapp" label="PLG_SYSTEM_BTNWHATSAPP_FIELDSET_WHATSAPP">
 
                 <field
-                        name="phone"
-                        type="text"
-                        required="true"
-                        label="PLG_SYSTEM_BTNWHATSAPP_PHONE_LABEL"
-                        description="PLG_SYSTEM_BTNWHATSAPP_PHONE_DESC" />
+                    name="phone"
+                    type="text"
+                    required="true"
+                    label="PLG_SYSTEM_BTNWHATSAPP_PHONE_LABEL"
+                    description="PLG_SYSTEM_BTNWHATSAPP_PHONE_DESC" />
 
                 <field
-                        name="message"
-                        type="textarea"
-                        required="true"
-                        label="PLG_SYSTEM_BTNWHATSAPP_MESSAGE_LABEL"
-                        description="PLG_SYSTEM_BTNWHATSAPP_MESSAGE_DESC"
-                        hint="PLG_SYSTEM_BTNWHATSAPP_MESSAGE_HINT"
-                        default="Olá! Estou nesta página: {url}" />
+                    name="message"
+                    type="textarea"
+                    required="true"
+                    rows="3"
+                    label="PLG_SYSTEM_BTNWHATSAPP_MESSAGE_LABEL"
+                    description="PLG_SYSTEM_BTNWHATSAPP_MESSAGE_DESC"
+                    hint="PLG_SYSTEM_BTNWHATSAPP_MESSAGE_HINT"
+                    default="Olá! Estou nesta página: {url}" />
 
                 <field
-                        type="note"
-                        class="alert alert-info"
-                        description="PLG_SYSTEM_BTNWHATSAPP_MESSAGE_NOTE" />
+                    type="note"
+                    class="alert alert-info"
+                    description="PLG_SYSTEM_BTNWHATSAPP_MESSAGE_NOTE" />
 
                 <field
-                        name="position"
-                        type="list"
-                        default="end"
-                        label="PLG_SYSTEM_BTNWHATSAPP_POSITION_LABEL">
+                    name="position"
+                    type="list"
+                    default="end"
+                    label="PLG_SYSTEM_BTNWHATSAPP_POSITION_LABEL">
                     <option value="end">PLG_SYSTEM_BTNWHATSAPP_POSITION_END</option>
                     <option value="start">PLG_SYSTEM_BTNWHATSAPP_POSITION_START</option>
                 </field>
@@ -101,41 +88,348 @@
             <fieldset name="display" label="PLG_SYSTEM_BTNWHATSAPP_FIELDSET_DISPLAY">
 
                 <field
-                        name="display_mode"
-                        type="list"
-                        default="all"
-                        label="PLG_SYSTEM_BTNWHATSAPP_DISPLAY_MODE_LABEL">
+                    name="display_mode"
+                    type="list"
+                    default="all"
+                    label="PLG_SYSTEM_BTNWHATSAPP_DISPLAY_MODE_LABEL">
                     <option value="all">PLG_SYSTEM_BTNWHATSAPP_DISPLAY_ALL</option>
                     <option value="only">PLG_SYSTEM_BTNWHATSAPP_DISPLAY_ONLY</option>
                     <option value="exclude">PLG_SYSTEM_BTNWHATSAPP_DISPLAY_EXCLUDE</option>
                 </field>
 
                 <field
-                        name="menu_items"
-                        type="sql"
-                        multiple="true"
-                        layout="joomla.form.field.list-fancy-select"
-                        label="PLG_SYSTEM_BTNWHATSAPP_MENU_ITEMS_LABEL"
-                        description="PLG_SYSTEM_BTNWHATSAPP_MENU_ITEMS_DESC"
-                        showon="display_mode:only,exclude"
-                        key_field="value"
-                        value_field="text"
-                        query="SELECT m.id AS value,
-                                  CONCAT(m.title, ' (#', m.id, ')') AS text
-                           FROM #__menu AS m
-                           WHERE m.client_id = 0
-                             AND m.published >= 0
-                           ORDER BY m.menutype, m.lft" />
+                    name="menu_items"
+                    type="sql"
+                    multiple="true"
+                    layout="joomla.form.field.list-fancy-select"
+                    label="PLG_SYSTEM_BTNWHATSAPP_MENU_ITEMS_LABEL"
+                    description="PLG_SYSTEM_BTNWHATSAPP_MENU_ITEMS_DESC"
+                    showon="display_mode:only,exclude"
+                    key_field="value"
+                    value_field="text"
+                    query="SELECT m.id AS value,
+                              CONCAT(m.title, ' (#', m.id, ')') AS text
+                       FROM #__menu AS m
+                       WHERE m.client_id = 0
+                         AND m.published >= 0
+                       ORDER BY m.menutype, m.lft" />
 
                 <field
-                        name="device"
-                        type="list"
-                        default="all"
-                        label="PLG_SYSTEM_BTNWHATSAPP_DEVICE_LABEL">
+                    name="device"
+                    type="list"
+                    default="all"
+                    label="PLG_SYSTEM_BTNWHATSAPP_DEVICE_LABEL">
                     <option value="all">PLG_SYSTEM_BTNWHATSAPP_DEVICE_ALL</option>
                     <option value="desktop">PLG_SYSTEM_BTNWHATSAPP_DEVICE_DESKTOP</option>
                     <option value="mobile">PLG_SYSTEM_BTNWHATSAPP_DEVICE_MOBILE</option>
                 </field>
+
+            </fieldset>
+
+            <!-- ================= LAYOUT ================= -->
+            <fieldset name="layout" label="PLG_SYSTEM_BTNWHATSAPP_FIELDSET_LAYOUT">
+
+                <field
+                    name="layout_mode"
+                    type="list"
+                    default="icon_text"
+                    label="PLG_SYSTEM_BTNWHATSAPP_LAYOUT_MODE_LABEL">
+                    <option value="icon">PLG_SYSTEM_BTNWHATSAPP_LAYOUT_MODE_ICON</option>
+                    <option value="text">PLG_SYSTEM_BTNWHATSAPP_LAYOUT_MODE_TEXT</option>
+                    <option value="icon_text">PLG_SYSTEM_BTNWHATSAPP_LAYOUT_MODE_ICON_TEXT</option>
+                </field>
+
+                <field
+                    name="icon_image"
+                    type="media"
+                    default=""
+                    label="PLG_SYSTEM_BTNWHATSAPP_ICON_IMAGE_LABEL"
+                    description="PLG_SYSTEM_BTNWHATSAPP_ICON_IMAGE_DESC"
+                    showon="layout_mode:icon,icon_text" />
+
+                <field
+                    name="icon_svg"
+                    type="textarea"
+                    default=""
+                    rows="4"
+                    label="PLG_SYSTEM_BTNWHATSAPP_ICON_SVG_LABEL"
+                    description="PLG_SYSTEM_BTNWHATSAPP_ICON_SVG_DESC"
+                    showon="layout_mode:icon,icon_text" />
+
+                <field
+                    name="icon_class"
+                    type="text"
+                    default=""
+                    label="PLG_SYSTEM_BTNWHATSAPP_ICON_CLASS_LABEL"
+                    description="PLG_SYSTEM_BTNWHATSAPP_ICON_CLASS_DESC"
+                    showon="layout_mode:icon,icon_text" />
+
+                <field
+                    name="button_text"
+                    type="text"
+                    default="WhatsApp"
+                    label="PLG_SYSTEM_BTNWHATSAPP_BUTTON_TEXT_LABEL"
+                    description="PLG_SYSTEM_BTNWHATSAPP_BUTTON_TEXT_DESC"
+                    showon="layout_mode:text,icon_text" />
+
+                <field
+                    name="shape"
+                    type="list"
+                    default="pill"
+                    label="PLG_SYSTEM_BTNWHATSAPP_SHAPE_LABEL">
+                    <option value="circle">PLG_SYSTEM_BTNWHATSAPP_SHAPE_CIRCLE</option>
+                    <option value="pill">PLG_SYSTEM_BTNWHATSAPP_SHAPE_PILL</option>
+                    <option value="rounded">PLG_SYSTEM_BTNWHATSAPP_SHAPE_ROUNDED</option>
+                    <option value="square">PLG_SYSTEM_BTNWHATSAPP_SHAPE_SQUARE</option>
+                </field>
+
+                <field
+                    name="size"
+                    type="list"
+                    default="md"
+                    label="PLG_SYSTEM_BTNWHATSAPP_SIZE_LABEL">
+                    <option value="sm">PLG_SYSTEM_BTNWHATSAPP_SIZE_SM</option>
+                    <option value="md">PLG_SYSTEM_BTNWHATSAPP_SIZE_MD</option>
+                    <option value="lg">PLG_SYSTEM_BTNWHATSAPP_SIZE_LG</option>
+                </field>
+
+            </fieldset>
+
+            <!-- ================= DESIGN ================= -->
+            <fieldset name="design" label="PLG_SYSTEM_BTNWHATSAPP_FIELDSET_DESIGN">
+
+                <field
+                    name="bg_color"
+                    type="color"
+                    default="#25D366"
+                    label="PLG_SYSTEM_BTNWHATSAPP_BG_COLOR_LABEL"
+                    description="PLG_SYSTEM_BTNWHATSAPP_BG_COLOR_DESC" />
+
+                <field
+                    name="text_color"
+                    type="color"
+                    default="#FFFFFF"
+                    label="PLG_SYSTEM_BTNWHATSAPP_TEXT_COLOR_LABEL"
+                    description="PLG_SYSTEM_BTNWHATSAPP_TEXT_COLOR_DESC" />
+
+                <field
+                    name="border_color"
+                    type="text"
+                    default="transparent"
+                    label="PLG_SYSTEM_BTNWHATSAPP_BORDER_COLOR_LABEL"
+                    description="PLG_SYSTEM_BTNWHATSAPP_BORDER_COLOR_DESC" />
+
+                <field
+                    name="bg_hover"
+                    type="color"
+                    default="#1ebe5d"
+                    label="PLG_SYSTEM_BTNWHATSAPP_BG_HOVER_LABEL"
+                    description="PLG_SYSTEM_BTNWHATSAPP_BG_HOVER_DESC" />
+
+                <field
+                    name="text_hover"
+                    type="color"
+                    default="#FFFFFF"
+                    label="PLG_SYSTEM_BTNWHATSAPP_TEXT_HOVER_LABEL"
+                    description="PLG_SYSTEM_BTNWHATSAPP_TEXT_HOVER_DESC" />
+
+                <field
+                    name="border_hover"
+                    type="text"
+                    default="transparent"
+                    label="PLG_SYSTEM_BTNWHATSAPP_BORDER_HOVER_LABEL"
+                    description="PLG_SYSTEM_BTNWHATSAPP_BORDER_HOVER_DESC" />
+
+                <field
+                    name="shadow"
+                    type="radio"
+                    default="1"
+                    label="PLG_SYSTEM_BTNWHATSAPP_SHADOW_LABEL"
+                    class="btn-group btn-group-yesno">
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
+                </field>
+
+                <field
+                    name="offset_bottom"
+                    type="number"
+                    default="20"
+                    min="0"
+                    max="500"
+                    label="PLG_SYSTEM_BTNWHATSAPP_OFFSET_BOTTOM_LABEL" />
+
+                <field
+                    name="offset_inline"
+                    type="number"
+                    default="20"
+                    min="0"
+                    max="500"
+                    label="PLG_SYSTEM_BTNWHATSAPP_OFFSET_INLINE_LABEL" />
+
+                <field
+                    name="zindex"
+                    type="number"
+                    default="999999"
+                    min="1"
+                    label="PLG_SYSTEM_BTNWHATSAPP_ZINDEX_LABEL" />
+
+            </fieldset>
+
+            <!-- ================= BEHAVIOUR ================= -->
+            <fieldset name="behaviour" label="PLG_SYSTEM_BTNWHATSAPP_FIELDSET_BEHAVIOUR">
+
+                <!-- Animação de entrada -->
+                <field
+                    name="animation"
+                    type="list"
+                    default="slide"
+                    label="PLG_SYSTEM_BTNWHATSAPP_ANIMATION_LABEL">
+                    <option value="none">PLG_SYSTEM_BTNWHATSAPP_ANIMATION_NONE</option>
+                    <option value="slide">PLG_SYSTEM_BTNWHATSAPP_ANIMATION_SLIDE</option>
+                    <option value="bounce">PLG_SYSTEM_BTNWHATSAPP_ANIMATION_BOUNCE</option>
+                    <option value="fade">PLG_SYSTEM_BTNWHATSAPP_ANIMATION_FADE</option>
+                </field>
+
+                <field
+                    name="animation_delay"
+                    type="number"
+                    default="1000"
+                    min="0"
+                    max="10000"
+                    step="100"
+                    label="PLG_SYSTEM_BTNWHATSAPP_ANIMATION_DELAY_LABEL"
+                    description="PLG_SYSTEM_BTNWHATSAPP_ANIMATION_DELAY_DESC" />
+
+                <!-- Tooltip -->
+                <field
+                    name="tooltip_enabled"
+                    type="radio"
+                    default="0"
+                    label="PLG_SYSTEM_BTNWHATSAPP_TOOLTIP_ENABLED_LABEL"
+                    class="btn-group btn-group-yesno">
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
+                </field>
+
+                <field
+                    name="tooltip_text"
+                    type="text"
+                    default="Fale conosco!"
+                    label="PLG_SYSTEM_BTNWHATSAPP_TOOLTIP_TEXT_LABEL"
+                    description="PLG_SYSTEM_BTNWHATSAPP_TOOLTIP_TEXT_DESC"
+                    showon="tooltip_enabled:1" />
+
+                <field
+                    name="tooltip_delay"
+                    type="number"
+                    default="3000"
+                    min="0"
+                    max="30000"
+                    step="500"
+                    label="PLG_SYSTEM_BTNWHATSAPP_TOOLTIP_DELAY_LABEL"
+                    description="PLG_SYSTEM_BTNWHATSAPP_TOOLTIP_DELAY_DESC"
+                    showon="tooltip_enabled:1" />
+
+                <field
+                    name="tooltip_bg"
+                    type="color"
+                    default="#075E54"
+                    label="PLG_SYSTEM_BTNWHATSAPP_TOOLTIP_BG_LABEL"
+                    showon="tooltip_enabled:1" />
+
+                <field
+                    name="tooltip_color"
+                    type="color"
+                    default="#FFFFFF"
+                    label="PLG_SYSTEM_BTNWHATSAPP_TOOLTIP_COLOR_LABEL"
+                    showon="tooltip_enabled:1" />
+
+            </fieldset>
+
+            <!-- ================= SCHEDULE ================= -->
+            <fieldset name="schedule" label="PLG_SYSTEM_BTNWHATSAPP_FIELDSET_SCHEDULE">
+
+                <field
+                    name="schedule_enabled"
+                    type="radio"
+                    default="0"
+                    label="PLG_SYSTEM_BTNWHATSAPP_SCHEDULE_ENABLED_LABEL"
+                    description="PLG_SYSTEM_BTNWHATSAPP_SCHEDULE_ENABLED_DESC"
+                    class="btn-group btn-group-yesno">
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
+                </field>
+
+                <field
+                    name="schedule_timezone"
+                    type="timezone"
+                    default="America/Sao_Paulo"
+                    label="PLG_SYSTEM_BTNWHATSAPP_SCHEDULE_TIMEZONE_LABEL"
+                    showon="schedule_enabled:1" />
+
+                <field
+                    name="schedule_offline_msg"
+                    type="text"
+                    default="Fora do horário de atendimento"
+                    label="PLG_SYSTEM_BTNWHATSAPP_SCHEDULE_OFFLINE_MSG_LABEL"
+                    description="PLG_SYSTEM_BTNWHATSAPP_SCHEDULE_OFFLINE_MSG_DESC"
+                    showon="schedule_enabled:1" />
+
+                <!-- Segunda-feira -->
+                <field type="note" label="PLG_SYSTEM_BTNWHATSAPP_SCHEDULE_MON" class="alert alert-secondary" showon="schedule_enabled:1" />
+                <field name="mon_enabled" type="radio" default="1" label="PLG_SYSTEM_BTNWHATSAPP_SCHEDULE_DAY_ACTIVE" class="btn-group btn-group-yesno" showon="schedule_enabled:1">
+                    <option value="1">JYES</option><option value="0">JNO</option>
+                </field>
+                <field name="mon_open"  type="text" default="08:00" label="PLG_SYSTEM_BTNWHATSAPP_SCHEDULE_OPEN"  showon="schedule_enabled:1[AND]mon_enabled:1" />
+                <field name="mon_close" type="text" default="18:00" label="PLG_SYSTEM_BTNWHATSAPP_SCHEDULE_CLOSE" showon="schedule_enabled:1[AND]mon_enabled:1" />
+
+                <!-- Terça-feira -->
+                <field type="note" label="PLG_SYSTEM_BTNWHATSAPP_SCHEDULE_TUE" class="alert alert-secondary" showon="schedule_enabled:1" />
+                <field name="tue_enabled" type="radio" default="1" label="PLG_SYSTEM_BTNWHATSAPP_SCHEDULE_DAY_ACTIVE" class="btn-group btn-group-yesno" showon="schedule_enabled:1">
+                    <option value="1">JYES</option><option value="0">JNO</option>
+                </field>
+                <field name="tue_open"  type="text" default="08:00" label="PLG_SYSTEM_BTNWHATSAPP_SCHEDULE_OPEN"  showon="schedule_enabled:1[AND]tue_enabled:1" />
+                <field name="tue_close" type="text" default="18:00" label="PLG_SYSTEM_BTNWHATSAPP_SCHEDULE_CLOSE" showon="schedule_enabled:1[AND]tue_enabled:1" />
+
+                <!-- Quarta-feira -->
+                <field type="note" label="PLG_SYSTEM_BTNWHATSAPP_SCHEDULE_WED" class="alert alert-secondary" showon="schedule_enabled:1" />
+                <field name="wed_enabled" type="radio" default="1" label="PLG_SYSTEM_BTNWHATSAPP_SCHEDULE_DAY_ACTIVE" class="btn-group btn-group-yesno" showon="schedule_enabled:1">
+                    <option value="1">JYES</option><option value="0">JNO</option>
+                </field>
+                <field name="wed_open"  type="text" default="08:00" label="PLG_SYSTEM_BTNWHATSAPP_SCHEDULE_OPEN"  showon="schedule_enabled:1[AND]wed_enabled:1" />
+                <field name="wed_close" type="text" default="18:00" label="PLG_SYSTEM_BTNWHATSAPP_SCHEDULE_CLOSE" showon="schedule_enabled:1[AND]wed_enabled:1" />
+
+                <!-- Quinta-feira -->
+                <field type="note" label="PLG_SYSTEM_BTNWHATSAPP_SCHEDULE_THU" class="alert alert-secondary" showon="schedule_enabled:1" />
+                <field name="thu_enabled" type="radio" default="1" label="PLG_SYSTEM_BTNWHATSAPP_SCHEDULE_DAY_ACTIVE" class="btn-group btn-group-yesno" showon="schedule_enabled:1">
+                    <option value="1">JYES</option><option value="0">JNO</option>
+                </field>
+                <field name="thu_open"  type="text" default="08:00" label="PLG_SYSTEM_BTNWHATSAPP_SCHEDULE_OPEN"  showon="schedule_enabled:1[AND]thu_enabled:1" />
+                <field name="thu_close" type="text" default="18:00" label="PLG_SYSTEM_BTNWHATSAPP_SCHEDULE_CLOSE" showon="schedule_enabled:1[AND]thu_enabled:1" />
+
+                <!-- Sexta-feira -->
+                <field type="note" label="PLG_SYSTEM_BTNWHATSAPP_SCHEDULE_FRI" class="alert alert-secondary" showon="schedule_enabled:1" />
+                <field name="fri_enabled" type="radio" default="1" label="PLG_SYSTEM_BTNWHATSAPP_SCHEDULE_DAY_ACTIVE" class="btn-group btn-group-yesno" showon="schedule_enabled:1">
+                    <option value="1">JYES</option><option value="0">JNO</option>
+                </field>
+                <field name="fri_open"  type="text" default="08:00" label="PLG_SYSTEM_BTNWHATSAPP_SCHEDULE_OPEN"  showon="schedule_enabled:1[AND]fri_enabled:1" />
+                <field name="fri_close" type="text" default="18:00" label="PLG_SYSTEM_BTNWHATSAPP_SCHEDULE_CLOSE" showon="schedule_enabled:1[AND]fri_enabled:1" />
+
+                <!-- Sábado -->
+                <field type="note" label="PLG_SYSTEM_BTNWHATSAPP_SCHEDULE_SAT" class="alert alert-secondary" showon="schedule_enabled:1" />
+                <field name="sat_enabled" type="radio" default="0" label="PLG_SYSTEM_BTNWHATSAPP_SCHEDULE_DAY_ACTIVE" class="btn-group btn-group-yesno" showon="schedule_enabled:1">
+                    <option value="1">JYES</option><option value="0">JNO</option>
+                </field>
+                <field name="sat_open"  type="text" default="08:00" label="PLG_SYSTEM_BTNWHATSAPP_SCHEDULE_OPEN"  showon="schedule_enabled:1[AND]sat_enabled:1" />
+                <field name="sat_close" type="text" default="12:00" label="PLG_SYSTEM_BTNWHATSAPP_SCHEDULE_CLOSE" showon="schedule_enabled:1[AND]sat_enabled:1" />
+
+                <!-- Domingo -->
+                <field type="note" label="PLG_SYSTEM_BTNWHATSAPP_SCHEDULE_SUN" class="alert alert-secondary" showon="schedule_enabled:1" />
+                <field name="sun_enabled" type="radio" default="0" label="PLG_SYSTEM_BTNWHATSAPP_SCHEDULE_DAY_ACTIVE" class="btn-group btn-group-yesno" showon="schedule_enabled:1">
+                    <option value="1">JYES</option><option value="0">JNO</option>
+                </field>
+                <field name="sun_open"  type="text" default="08:00" label="PLG_SYSTEM_BTNWHATSAPP_SCHEDULE_OPEN"  showon="schedule_enabled:1[AND]sun_enabled:1" />
+                <field name="sun_close" type="text" default="12:00" label="PLG_SYSTEM_BTNWHATSAPP_SCHEDULE_CLOSE" showon="schedule_enabled:1[AND]sun_enabled:1" />
 
             </fieldset>
 
