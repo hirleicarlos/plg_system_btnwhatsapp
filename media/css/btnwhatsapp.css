@@ -1,157 +1,279 @@
-/* =========================
-   BTN WHATSAPP (PRODUTO)
-   - Direcional (start/end)
-   - Shape (circle/pill/rounded/square)
-   - Size (sm/md/lg)
-   - CSS variables via inline style (layout)
-   ========================= */
+/* ==========================================================
+   PLG_SYSTEM_BTNWHATSAPP — v3.0.0
+   ========================================================== */
 
+/* ----------------------------------------------------------
+   WRAPPER FLUTUANTE
+   ---------------------------------------------------------- */
 .plg-btnwa {
     position: fixed;
     inset-block-end: var(--btnwa-offset-bottom, 20px);
     z-index: var(--btnwa-zindex, 999999);
+
+    /* oculto por padrão — JS revela com animação */
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .25s ease;
+}
+
+.plg-btnwa.is-visible {
+    opacity: 1;
+    pointer-events: auto;
 }
 
 /* posição direcional */
-.plg-btnwa[data-pos="end"] {
-    inset-inline-end: var(--btnwa-offset-inline, 20px);
-}
+.plg-btnwa[data-pos="end"]   { inset-inline-end:   var(--btnwa-offset-inline, 20px); }
+.plg-btnwa[data-pos="start"] { inset-inline-start: var(--btnwa-offset-inline, 20px); }
 
-.plg-btnwa[data-pos="start"] {
-    inset-inline-start: var(--btnwa-offset-inline, 20px);
-}
-
-/* botão base */
+/* ----------------------------------------------------------
+   BOTÃO BASE
+   ---------------------------------------------------------- */
 .plg-btnwa__btn {
     display: inline-flex;
     align-items: center;
     gap: 10px;
 
-    background: var(--btnwa-bg, #25D366);
-    color: var(--btnwa-color, #ffffff);
-    border: 1px solid var(--btnwa-border, transparent);
+    background:   var(--btnwa-bg, #25D366);
+    color:        var(--btnwa-color, #ffffff);
+    border: 2px solid var(--btnwa-border, transparent);
 
     text-decoration: none;
     font-weight: 700;
     line-height: 1;
+    cursor: pointer;
 
-    transition: background-color .2s ease, color .2s ease, border-color .2s ease, transform .08s ease;
+    transition:
+        background-color .2s ease,
+        color            .2s ease,
+        border-color     .2s ease,
+        transform        .1s ease,
+        box-shadow       .2s ease;
+
     user-select: none;
     -webkit-tap-highlight-color: transparent;
 }
 
-/* sombra (liga/desliga via --btnwa-shadow: 1|0) */
+/* sombra */
 .plg-btnwa__btn {
-    box-shadow: calc(var(--btnwa-shadow, 1) * 1px) 4px 12px rgba(0, 0, 0, .20);
+    box-shadow: calc(var(--btnwa-shadow, 1) * 2px) 4px 16px rgba(0,0,0,.22);
 }
 
 /* hover */
 .plg-btnwa__btn:hover {
-    background: var(--btnwa-bg-hover, #1ebe5d);
-    color: var(--btnwa-color-hover, #ffffff);
+    background:   var(--btnwa-bg-hover, #1ebe5d);
+    color:        var(--btnwa-color-hover, #ffffff);
     border-color: var(--btnwa-border-hover, transparent);
-    transform: translateY(-1px);
+    transform:    translateY(-2px);
+    box-shadow:   calc(var(--btnwa-shadow, 1) * 4px) 8px 20px rgba(0,0,0,.28);
 }
 
 /* focus acessível */
 .plg-btnwa__btn:focus,
 .plg-btnwa__btn:focus-visible {
-    outline: 2px solid rgba(37, 211, 102, .35);
+    outline: 3px solid rgba(37,211,102,.45);
     outline-offset: 3px;
 }
 
-/* ícone */
+/* estado offline */
+.plg-btnwa--offline .plg-btnwa__btn,
+.plg-btnwa__btn--disabled {
+    background:  #9e9e9e !important;
+    color:       #fff    !important;
+    cursor:      not-allowed;
+    opacity:     .75;
+    transform:   none !important;
+    box-shadow:  none !important;
+}
+
+/* ----------------------------------------------------------
+   ÍCONE
+   ---------------------------------------------------------- */
 .plg-btnwa__icon {
     display: inline-block;
     flex: 0 0 auto;
 }
 
-/* texto */
+/* ----------------------------------------------------------
+   TEXTO
+   ---------------------------------------------------------- */
 .plg-btnwa__text {
     display: inline-block;
     white-space: nowrap;
 }
 
-/* =========================
+/* ----------------------------------------------------------
    SIZE
-   ========================= */
-.plg-btnwa[data-size="sm"] .plg-btnwa__btn {
-    padding: 10px 14px;
-    font-size: 13px;
-}
+   ---------------------------------------------------------- */
+.plg-btnwa[data-size="sm"] .plg-btnwa__btn { padding: 10px 14px; font-size: 13px; }
+.plg-btnwa[data-size="md"] .plg-btnwa__btn { padding: 12px 18px; font-size: 14px; }
+.plg-btnwa[data-size="lg"] .plg-btnwa__btn { padding: 14px 22px; font-size: 16px; }
 
-.plg-btnwa[data-size="md"] .plg-btnwa__btn {
-    padding: 12px 18px;
-    font-size: 14px;
-}
+.plg-btnwa[data-size="sm"] .plg-btnwa__icon { width: 18px; height: 18px; }
+.plg-btnwa[data-size="md"] .plg-btnwa__icon { width: 22px; height: 22px; }
+.plg-btnwa[data-size="lg"] .plg-btnwa__icon { width: 26px; height: 26px; }
 
-.plg-btnwa[data-size="lg"] .plg-btnwa__btn {
-    padding: 14px 22px;
-    font-size: 15px;
-}
-
-/* ícone acompanha o size */
-.plg-btnwa[data-size="sm"] .plg-btnwa__icon {
-    width: 18px;
-    height: 18px;
-}
-
-.plg-btnwa[data-size="md"] .plg-btnwa__icon {
-    width: 22px;
-    height: 22px;
-}
-
-.plg-btnwa[data-size="lg"] .plg-btnwa__icon {
-    width: 26px;
-    height: 26px;
-}
-
-/* =========================
+/* ----------------------------------------------------------
    SHAPE
-   ========================= */
-
-/* circle: força botão virar bolinha (ótimo para modo icon) */
+   ---------------------------------------------------------- */
 .plg-btnwa[data-shape="circle"] .plg-btnwa__btn {
     border-radius: 999px;
     padding: 14px;
+    aspect-ratio: 1;
+    justify-content: center;
 }
+.plg-btnwa[data-shape="circle"][data-size="sm"] .plg-btnwa__btn { padding: 11px; }
+.plg-btnwa[data-shape="circle"][data-size="md"] .plg-btnwa__btn { padding: 14px; }
+.plg-btnwa[data-shape="circle"][data-size="lg"] .plg-btnwa__btn { padding: 17px; }
 
-.plg-btnwa[data-shape="circle"][data-size="sm"] .plg-btnwa__btn {
-    padding: 12px;
-}
+.plg-btnwa[data-shape="pill"]    .plg-btnwa__btn { border-radius: 999px; }
+.plg-btnwa[data-shape="rounded"] .plg-btnwa__btn { border-radius: 16px;  }
+.plg-btnwa[data-shape="square"]  .plg-btnwa__btn { border-radius: 6px;   }
 
-.plg-btnwa[data-shape="circle"][data-size="md"] .plg-btnwa__btn {
-    padding: 14px;
-}
-
-.plg-btnwa[data-shape="circle"][data-size="lg"] .plg-btnwa__btn {
-    padding: 16px;
-}
-
-/* pill */
-.plg-btnwa[data-shape="pill"] .plg-btnwa__btn {
-    border-radius: 999px;
-}
-
-/* rounded */
-.plg-btnwa[data-shape="rounded"] .plg-btnwa__btn {
-    border-radius: 16px;
-}
-
-/* square */
-.plg-btnwa[data-shape="square"] .plg-btnwa__btn {
-    border-radius: 6px;
-}
-
-/* =========================
+/* ----------------------------------------------------------
    MODE: icon only
-   - garante que não estique e fica centralizado
-   ========================= */
+   ---------------------------------------------------------- */
 .plg-btnwa[data-mode="icon"] .plg-btnwa__btn {
     justify-content: center;
     gap: 0;
 }
+.plg-btnwa[data-mode="icon"] .plg-btnwa__text { display: none; }
 
-.plg-btnwa[data-mode="icon"] .plg-btnwa__text {
-    display: none;
+/* ----------------------------------------------------------
+   TOOLTIP
+   ---------------------------------------------------------- */
+.plg-btnwa__tooltip {
+    position: absolute;
+    bottom: calc(100% + 14px);
+    white-space: nowrap;
+    background: var(--btnwa-tooltip-bg, #075E54);
+    color:      var(--btnwa-tooltip-color, #fff);
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.3;
+    pointer-events: none;
+
+    opacity: 0;
+    transform: translateY(6px) scale(.95);
+    transition: opacity .25s ease, transform .25s ease;
+
+    /* alinha com o lado do botão */
+    box-shadow: 0 4px 14px rgba(0,0,0,.18);
 }
+
+/* seta */
+.plg-btnwa__tooltip-arrow {
+    position: absolute;
+    bottom: -6px;
+    width: 12px;
+    height: 12px;
+    background: var(--btnwa-tooltip-bg, #075E54);
+    transform: rotate(45deg);
+    border-radius: 2px;
+}
+
+/* posição end (direita) */
+.plg-btnwa[data-pos="end"] .plg-btnwa__tooltip {
+    right: 0;
+}
+.plg-btnwa[data-pos="end"] .plg-btnwa__tooltip-arrow {
+    right: 18px;
+}
+
+/* posição start (esquerda) */
+.plg-btnwa[data-pos="start"] .plg-btnwa__tooltip {
+    left: 0;
+}
+.plg-btnwa[data-pos="start"] .plg-btnwa__tooltip-arrow {
+    left: 18px;
+}
+
+.plg-btnwa__tooltip.is-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* ----------------------------------------------------------
+   ANIMAÇÕES DE ENTRADA
+   ---------------------------------------------------------- */
+
+/* slide (padrão) */
+@keyframes btnwa-slide-end {
+    from { opacity: 0; transform: translateX(60px); }
+    to   { opacity: 1; transform: translateX(0);    }
+}
+@keyframes btnwa-slide-start {
+    from { opacity: 0; transform: translateX(-60px); }
+    to   { opacity: 1; transform: translateX(0);     }
+}
+
+/* bounce */
+@keyframes btnwa-bounce {
+    0%   { opacity: 0; transform: scale(.4);   }
+    60%  { opacity: 1; transform: scale(1.15); }
+    80%  { transform: scale(.95); }
+    100% { transform: scale(1);   }
+}
+
+/* fade */
+@keyframes btnwa-fade {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* classes aplicadas por JS */
+.plg-btnwa.anim-slide[data-pos="end"].is-visible {
+    animation: btnwa-slide-end .45s cubic-bezier(.22,1,.36,1) forwards;
+}
+.plg-btnwa.anim-slide[data-pos="start"].is-visible {
+    animation: btnwa-slide-start .45s cubic-bezier(.22,1,.36,1) forwards;
+}
+.plg-btnwa.anim-bounce.is-visible {
+    animation: btnwa-bounce .55s cubic-bezier(.22,1,.36,1) forwards;
+}
+.plg-btnwa.anim-fade.is-visible {
+    animation: btnwa-fade .4s ease forwards;
+}
+
+/* ----------------------------------------------------------
+   PULSE no ícone (quando tooltip ativo)
+   ---------------------------------------------------------- */
+.plg-btnwa.tooltip-shown .plg-btnwa__btn {
+    animation: btnwa-pulse 1.8s ease-in-out 3;
+}
+
+@keyframes btnwa-pulse {
+    0%, 100% { box-shadow: calc(var(--btnwa-shadow,1)*2px) 4px 16px rgba(0,0,0,.22); }
+    50%       { box-shadow: 0 0 0 10px rgba(37,211,102,.2), calc(var(--btnwa-shadow,1)*2px) 4px 16px rgba(0,0,0,.22); }
+}
+
+/* ----------------------------------------------------------
+   ÍCONE PERSONALIZADO — img e i (font icons)
+   ---------------------------------------------------------- */
+
+/* Imagem como ícone */
+.plg-btnwa__icon[src] {
+    object-fit: contain;
+    display: inline-block;
+    flex: 0 0 auto;
+}
+
+/* Font icon (ex: Font Awesome, Bootstrap Icons) */
+i.plg-btnwa__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    line-height: 1;
+}
+
+/* Tamanhos aplicados também a img e i */
+.plg-btnwa[data-size="sm"] .plg-btnwa__icon[src],
+.plg-btnwa[data-size="sm"] i.plg-btnwa__icon { width: 18px; height: 18px; font-size: 18px; }
+
+.plg-btnwa[data-size="md"] .plg-btnwa__icon[src],
+.plg-btnwa[data-size="md"] i.plg-btnwa__icon { width: 22px; height: 22px; font-size: 22px; }
+
+.plg-btnwa[data-size="lg"] .plg-btnwa__icon[src],
+.plg-btnwa[data-size="lg"] i.plg-btnwa__icon { width: 26px; height: 26px; font-size: 26px; }
