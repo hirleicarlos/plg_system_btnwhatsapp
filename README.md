@@ -1,6 +1,6 @@
 # 📲 plg_system_btnwhatsapp — Botão Flutuante WhatsApp para Joomla
 
-![Versão](https://img.shields.io/badge/versão-3.0.0-blue)
+![Versão](https://img.shields.io/badge/versão-3.1.0-blue)
 ![Status](https://img.shields.io/badge/status-ativo-success)
 ![Joomla](https://img.shields.io/badge/Joomla-4.x%20%7C%205.x%20%7C%206.x-blue)
 ![PHP](https://img.shields.io/badge/PHP-8.3%2B-purple)
@@ -16,6 +16,7 @@ O **plg_system_btnwhatsapp** é um plugin do tipo **System** para Joomla 4, 5 e 
 Totalmente configurável pelo painel administrativo do Joomla, com suporte a:
 
 - Personalização visual completa (cores, tamanho, forma, ícone)
+- **Aparência diferenciada por dispositivo** — overrides independentes para mobile
 - Controle de exibição por página, dispositivo e horário
 - Animações de entrada e tooltip automático
 - Horário de atendimento por dia da semana com fuso horário
@@ -38,7 +39,7 @@ O plugin atua na camada de sistema do Joomla, interceptando dois momentos do cic
        └──────────┬──────────┘
                   │
        ┌──────────▼──────────┐
-       │    onAfterRender     │  → Verifica regras, monta dados e injeta o HTML
+       │    onAfterRender     │  → Verifica regras, aplica overrides mobile, injeta HTML
        └──────────┬──────────┘
                   │
        ┌──────────▼──────────┐
@@ -95,10 +96,11 @@ Executa todas as verificações antes de injetar o botão:
 
 - **Contexto:** somente frontend (`isClient('site')`)
 - **Dispositivo:** filtra por desktop, mobile ou ambos via `HTTP_USER_AGENT`
-- **Página:** verifica o item de menu ativo contra a lista configurada
+- **Página:** verifica o item de menu ativo contra a lista configurada (comparação de inteiros com tipo estrito)
 - **Horário:** calcula se está dentro do horário de atendimento pelo fuso configurado
 - **Telefone:** sanitiza, aceita apenas dígitos
 - **Mensagem:** substitui variáveis dinâmicas `{url}`, `{title}`, `{sitename}`
+- **Mobile overrides:** se o acesso for mobile, sobrepõe posição, layout, forma e tamanho com os valores da aba Mobile (quando configurados)
 - **Link:** gera URL `wa.me` (mobile) ou `api.whatsapp.com` (desktop)
 
 ### 3. Layout — `default.php`
@@ -116,7 +118,7 @@ Após o `DOMContentLoaded`, lê os `data-attributes` do wrapper e:
 
 **Pré-requisitos:** Joomla 4.x, 5.x ou 6.x · PHP 8.3+
 
-1. Baixe o arquivo `plg_system_btnwhatsapp_vX.X.X.zip`
+1. Baixe o arquivo `plg_system_btnwhatsapp.zip`
 2. No painel administrativo acesse:
    ```
    Sistema → Instalar → Extensões
@@ -155,7 +157,9 @@ Após o `DOMContentLoaded`, lê os `data-attributes` do wrapper e:
 
 ---
 
-### 🎨 Aba: Layout
+### 🎨 Aba: Layout — Desktop / Padrão
+
+Define a aparência base do botão, aplicada em desktop e usada como fallback no mobile quando não há override configurado.
 
 | Campo | Descrição |
 |---|---|
@@ -170,6 +174,23 @@ Após o `DOMContentLoaded`, lê os `data-attributes` do wrapper e:
 > 💡 **Prioridade do ícone:** Classe CSS → SVG → Imagem → SVG padrão WhatsApp. Se nenhum campo for preenchido, o ícone oficial do WhatsApp é usado automaticamente.
 
 > ⚠️ Os campos de ícone só aparecem quando o tipo de botão inclui ícone.
+
+---
+
+### 📱 Aba: Aparência no Mobile
+
+Permite configurar uma aparência específica para dispositivos móveis, **independente do Layout Desktop**. Cada campo possui a opção `Herdar do Desktop` — quando selecionada, usa o valor configurado na aba Layout.
+
+| Campo | Descrição | Padrão |
+|---|---|---|
+| **Posição** | Override da posição em mobile | Herdar do Desktop |
+| **Tipo de Botão** | Override do modo (ícone/texto/ícone+texto) | Herdar do Desktop |
+| **Forma** | Override da forma (círculo, pílula…) | Herdar do Desktop |
+| **Tamanho** | Override do tamanho | Herdar do Desktop |
+
+> 💡 **Configuração recomendada para mobile:** Tipo `Somente ícone` + Forma `Círculo` + Tamanho `Médio` — ocupa menos espaço na tela e segue o padrão de mercado para botões flutuantes em mobile.
+
+> ⚠️ **Compatibilidade retroativa:** quem atualiza de versões anteriores não perde nenhuma configuração. Todos os campos de override iniciam como `Herdar do Desktop`.
 
 ---
 
@@ -231,6 +252,9 @@ Após o `DOMContentLoaded`, lê os `data-attributes` do wrapper e:
 | Sanitização de SVG no PHP | Segurança: remove `on*`, `<script>` e `javascript:` antes de salvar |
 | Campo `type="media"` para imagem | Integração nativa com o Gerenciador de Mídia do Joomla |
 | Layout `FileLayout` separado | Separa lógica de negócio da apresentação |
+| Mobile overrides com `default=""` | Retrocompatibilidade: `Herdar` é o padrão, sem quebra de configs existentes |
+| `in_array` com tipo estrito | Evita falsos positivos na comparação de IDs de menu (int vs string) |
+| `prefers-reduced-motion` no CSS | Respeita preferência de acessibilidade do SO do usuário |
 
 ---
 
@@ -239,18 +263,27 @@ Após o `DOMContentLoaded`, lê os `data-attributes` do wrapper e:
 - PHP 8.3+
 - Joomla 4.x / 5.x / 6.x
 - HTML5 semântico
-- CSS3 (Custom Properties, Flexbox, `@keyframes`, lógicas `inset-*`)
+- CSS3 (Custom Properties, Flexbox, `@keyframes`, `@media prefers-reduced-motion`, lógicas `inset-*`)
 - JavaScript ES5 puro (sem dependências)
 
 ---
 
-## 🚀 Roadmap
+## 📋 Changelog
 
-- [ ] Suporte a múltiplos atendentes / números
-- [ ] Integração com WhatsApp Business API
-- [ ] Modo escuro automático
-- [ ] Configuração de cor por item de menu
-- [ ] Widget de pré-chat com nome/assunto
+### v3.1.0 — 2026-05-09
+- **Novo:** aba "Aparência no Mobile" com overrides independentes de posição, tipo, forma e tamanho
+- **Corrigido:** `in_array` agora usa comparação com tipo estrito nos filtros de menu
+- **Corrigido:** regra CSS `.plg-btnwa__btn` duplicada mesclada em um único bloco
+- **Acessibilidade:** `@media (prefers-reduced-motion: reduce)` adicionado ao CSS
+- **Manutenção:** versão alinhada entre `btnwhatsapp.xml` e `WebAssetManager`
+
+### v3.0.0
+- Refatoração completa para arquitetura Joomla 4+ (namespace, Service Provider, DI)
+- WebAssetManager para carregamento de CSS/JS
+- Horário de atendimento por dia da semana com fuso horário
+- Tooltip automático com delay configurável
+- Ícone customizável (classe CSS, SVG, imagem ou padrão WhatsApp)
+- Suporte RTL nativo via `inset-inline-*`
 
 ---
 
