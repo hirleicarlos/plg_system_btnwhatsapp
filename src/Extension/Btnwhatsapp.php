@@ -90,8 +90,9 @@ final class Btnwhatsapp extends CMSPlugin
         $active        = $menu->getActive();
         $currentItemId = $active ? (int) $active->id : 0;
 
-        if ($displayMode === 'only'    && !in_array($currentItemId, $menuItems)) return;
-        if ($displayMode === 'exclude' &&  in_array($currentItemId, $menuItems)) return;
+        $menuItemIds = array_map('intval', $menuItems);
+        if ($displayMode === 'only'    && !in_array($currentItemId, $menuItemIds, true)) return;
+        if ($displayMode === 'exclude' &&  in_array($currentItemId, $menuItemIds, true)) return;
 
         // ── Telefone ─────────────────────────────────────────
         $phone = preg_replace('/\D+/', '', (string) $this->params->get('phone', ''));
@@ -171,10 +172,26 @@ final class Btnwhatsapp extends CMSPlugin
         }
 
         // ── Layout params ─────────────────────────────────────
+        $position    = (string) $this->params->get('position',     'end');
         $layoutMode  = (string) $this->params->get('layout_mode',  'icon_text');
         $buttonText  = (string) $this->params->get('button_text',  'WhatsApp');
         $shape       = (string) $this->params->get('shape',        'pill');
         $size        = (string) $this->params->get('size',         'md');
+
+        // ── Mobile overrides ──────────────────────────────────
+        if ($isMobile) {
+            $mo = (string) $this->params->get('mobile_position', '');
+            if ($mo !== '') $position = $mo;
+
+            $mo = (string) $this->params->get('mobile_layout_mode', '');
+            if ($mo !== '') $layoutMode = $mo;
+
+            $mo = (string) $this->params->get('mobile_shape', '');
+            if ($mo !== '') $shape = $mo;
+
+            $mo = (string) $this->params->get('mobile_size', '');
+            if ($mo !== '') $size = $mo;
+        }
 
         // ── Ícone personalizado ────────────────────────────────
         // Campo media do Joomla salva JSON: {"imagefile":"images/...","width":...,"height":...,"alt":"..."}
@@ -230,7 +247,7 @@ final class Btnwhatsapp extends CMSPlugin
 
         $html = $layout->render([
             'link'           => $link,
-            'position'       => (string) $this->params->get('position', 'end'),
+            'position'       => $position,
             'is_open'        => $isOpen,
             'layout_mode'    => $layoutMode,
             'button_text'    => $buttonText,

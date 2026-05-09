@@ -1,5 +1,5 @@
 /**
- * PLG_SYSTEM_BTNWHATSAPP — v3.0.0
+ * PLG_SYSTEM_BTNWHATSAPP — v3.1.0
  * Animação de entrada + Tooltip automático
  */
 (function () {

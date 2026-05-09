@@ -8,7 +8,7 @@
     <authorUrl>https://hirleicarlos.github.io/</authorUrl>
 
     <creationDate>2026-04-14</creationDate>
-    <version>3.0.0</version>
+    <version>3.1.0</version>
 
     <copyright>(C) 2026 Hirlei Carlos Pereira de Araújo</copyright>
     <license>GNU General Public License version 2 or later</license>
@@ -188,6 +188,60 @@
                     type="list"
                     default="md"
                     label="PLG_SYSTEM_BTNWHATSAPP_SIZE_LABEL">
+                    <option value="sm">PLG_SYSTEM_BTNWHATSAPP_SIZE_SM</option>
+                    <option value="md">PLG_SYSTEM_BTNWHATSAPP_SIZE_MD</option>
+                    <option value="lg">PLG_SYSTEM_BTNWHATSAPP_SIZE_LG</option>
+                </field>
+
+            </fieldset>
+
+            <!-- ================= MOBILE ================= -->
+            <fieldset name="mobile" label="PLG_SYSTEM_BTNWHATSAPP_FIELDSET_MOBILE">
+
+                <field
+                    type="note"
+                    class="alert alert-info"
+                    description="PLG_SYSTEM_BTNWHATSAPP_MOBILE_NOTE" />
+
+                <field
+                    name="mobile_position"
+                    type="list"
+                    default=""
+                    label="PLG_SYSTEM_BTNWHATSAPP_POSITION_LABEL">
+                    <option value="">PLG_SYSTEM_BTNWHATSAPP_MOBILE_INHERIT</option>
+                    <option value="end">PLG_SYSTEM_BTNWHATSAPP_POSITION_END</option>
+                    <option value="start">PLG_SYSTEM_BTNWHATSAPP_POSITION_START</option>
+                </field>
+
+                <field
+                    name="mobile_layout_mode"
+                    type="list"
+                    default=""
+                    label="PLG_SYSTEM_BTNWHATSAPP_LAYOUT_MODE_LABEL">
+                    <option value="">PLG_SYSTEM_BTNWHATSAPP_MOBILE_INHERIT</option>
+                    <option value="icon">PLG_SYSTEM_BTNWHATSAPP_LAYOUT_MODE_ICON</option>
+                    <option value="text">PLG_SYSTEM_BTNWHATSAPP_LAYOUT_MODE_TEXT</option>
+                    <option value="icon_text">PLG_SYSTEM_BTNWHATSAPP_LAYOUT_MODE_ICON_TEXT</option>
+                </field>
+
+                <field
+                    name="mobile_shape"
+                    type="list"
+                    default=""
+                    label="PLG_SYSTEM_BTNWHATSAPP_SHAPE_LABEL">
+                    <option value="">PLG_SYSTEM_BTNWHATSAPP_MOBILE_INHERIT</option>
+                    <option value="circle">PLG_SYSTEM_BTNWHATSAPP_SHAPE_CIRCLE</option>
+                    <option value="pill">PLG_SYSTEM_BTNWHATSAPP_SHAPE_PILL</option>
+                    <option value="rounded">PLG_SYSTEM_BTNWHATSAPP_SHAPE_ROUNDED</option>
+                    <option value="square">PLG_SYSTEM_BTNWHATSAPP_SHAPE_SQUARE</option>
+                </field>
+
+                <field
+                    name="mobile_size"
+                    type="list"
+                    default=""
+                    label="PLG_SYSTEM_BTNWHATSAPP_SIZE_LABEL">
+                    <option value="">PLG_SYSTEM_BTNWHATSAPP_MOBILE_INHERIT</option>
                     <option value="sm">PLG_SYSTEM_BTNWHATSAPP_SIZE_SM</option>
                     <option value="md">PLG_SYSTEM_BTNWHATSAPP_SIZE_MD</option>
                     <option value="lg">PLG_SYSTEM_BTNWHATSAPP_SIZE_LG</option>

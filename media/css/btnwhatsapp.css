@@ -1,5 +1,5 @@
 /* ==========================================================
-   PLG_SYSTEM_BTNWHATSAPP — v3.0.0
+   PLG_SYSTEM_BTNWHATSAPP — v3.1.0
    ========================================================== */
 
 /* ----------------------------------------------------------
@@ -36,6 +36,7 @@
     background:   var(--btnwa-bg, #25D366);
     color:        var(--btnwa-color, #ffffff);
     border: 2px solid var(--btnwa-border, transparent);
+    box-shadow: calc(var(--btnwa-shadow, 1) * 2px) 4px 16px rgba(0,0,0,.22);
 
     text-decoration: none;
     font-weight: 700;
@@ -51,11 +52,6 @@
 
     user-select: none;
     -webkit-tap-highlight-color: transparent;
-}
-
-/* sombra */
-.plg-btnwa__btn {
-    box-shadow: calc(var(--btnwa-shadow, 1) * 2px) 4px 16px rgba(0,0,0,.22);
 }
 
 /* hover */
@@ -277,3 +273,19 @@ i.plg-btnwa__icon {
 
 .plg-btnwa[data-size="lg"] .plg-btnwa__icon[src],
 .plg-btnwa[data-size="lg"] i.plg-btnwa__icon { width: 26px; height: 26px; font-size: 26px; }
+
+/* ----------------------------------------------------------
+   ACESSIBILIDADE — REDUZIR MOVIMENTO
+   ---------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+    .plg-btnwa,
+    .plg-btnwa__btn,
+    .plg-btnwa__tooltip { transition: none; }
+
+    .plg-btnwa.is-visible,
+    .plg-btnwa.anim-slide[data-pos="end"].is-visible,
+    .plg-btnwa.anim-slide[data-pos="start"].is-visible,
+    .plg-btnwa.anim-bounce.is-visible,
+    .plg-btnwa.anim-fade.is-visible,
+    .plg-btnwa.tooltip-shown .plg-btnwa__btn { animation: none; }
+}
